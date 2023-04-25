@@ -1,0 +1,9 @@
+.container {
+  min-width: 840px;
+  display: flex;
+  justify-content: center;
+  column-gap: 8px;
+  margin: 0 auto;
+  background-color: #aed5ed;
+  padding: 8px 20px;
+}
