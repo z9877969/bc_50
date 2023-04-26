@@ -1,6 +1,6 @@
 import s from "./ProductsFilter.module.css";
 
-const ProductsFilter = () => {
+const ProductsFilter = ({ changeFilter }) => {
   return (
     <div className={s.filter}>
       <ul className={s.list}>
@@ -11,6 +11,7 @@ const ProductsFilter = () => {
             value="apple"
             type="checkbox"
             id="apple"
+            onChange={changeFilter}
           />
           <label className={s.label} htmlFor="apple">
             Apple
@@ -23,6 +24,7 @@ const ProductsFilter = () => {
             value="xiaomi"
             type="checkbox"
             id="xiaomi"
+            onChange={changeFilter}
           />
           <label className={s.label} htmlFor="xiaomi">
             Xiaomi
@@ -35,6 +37,7 @@ const ProductsFilter = () => {
             value="samsung"
             type="checkbox"
             id="samsung"
+            onChange={changeFilter}
           />
           <label className={s.label} htmlFor="samsung">
             Samsung
@@ -47,6 +50,7 @@ const ProductsFilter = () => {
             value="zte"
             type="checkbox"
             id="zte"
+            onChange={changeFilter}
           />
           <label className={s.label} htmlFor="zte">
             Zte
@@ -59,6 +63,7 @@ const ProductsFilter = () => {
             value="huawei"
             type="checkbox"
             id="huawei"
+            onChange={changeFilter}
           />
           <label className={s.label} htmlFor="huawei">
             Huawei

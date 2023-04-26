@@ -13,7 +13,6 @@ export const CartWrapper = styled.div`
   transition: transform 0.5s linear;
 
   ${(props) => {
-    console.log("props :>> ", props);
     return props.isOpen && "transform: translateX(-100%)"
   }}
 `;

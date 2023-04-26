@@ -1,66 +1,45 @@
 import "./App.css";
 
 import Cart from "../Cart/Cart";
+import { Component } from "react";
+import Counter from "../Counter/Counter";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 
-const App = () => {
-  return (
-    <>
-      <Header />
-      <Main />
-      <Cart />
-    </>
-  );
-};
+class App extends Component {
+  state = {
+    isCartOpen: false,
+    cartProducts: [],
+  };
+
+  openCart = () => {
+    this.setState({ isCartOpen: true });
+  };
+
+  closeCart = () => {
+    this.setState({ isCartOpen: false });
+  };
+
+  addProductToCart = (product) => {
+    this.setState((prevState) => ({
+      cartProducts: [...prevState.cartProducts, product],
+    }));
+  };
+
+  render() {
+    return (
+      <>
+        <Header openCart={this.openCart} />
+        <Main addProductToCart={this.addProductToCart} />
+        <Cart
+          isOpen={this.state.isCartOpen}
+          closeCart={this.closeCart}
+          products={this.state.cartProducts}
+        />
+        {/* <Counter test="Test string" /> */}
+      </>
+    );
+  }
+}
 
 export default App;
-
-// const Section = ({ children, title, wrappedEls }) => {
-//   return (
-//     <section>
-//       <div className="container">
-//         {title && <h2>{title}</h2>}
-//         {children}
-//         {wrappedEls}
-//       </div>
-//     </section>
-//   );
-// };
-
-// {
-//   /* <section>
-//   <div className="container">
-//     <h2>Title</h2>
-//     <ul>
-//       <li>Item</li>
-//       <li>Item</li>
-//       <li>Item</li>
-//     </ul>
-//   </div>
-// </section> */
-// }
-
-// {/* <Section
-//   wrappedEls={
-//     <ul>
-//       <li>Item</li>
-//       <li>Item</li>
-//       <li>Item</li>
-//     </ul>
-//   }
-// />;
-
-// <Section>
-//   <ul>
-//     <li>
-//       <img src="" alt="" />
-//     </li>
-//     <li>
-//       <img src="" alt="" />
-//     </li>
-//     <li>
-//       <img src="" alt="" />
-//     </li>
-//   </ul>
-// </Section>; */}
