@@ -25,9 +25,9 @@ const PrioritySelect = ({ changePriority, priority }) => {
   );
 };
 
-export default PrioritySelect;
+PrioritySelect.propTypes = {
+  changePriority: PropTypes.func.isRequired,
+  priority: PropTypes.string,
+};
 
-// setState({ propA: "qwe" });
-// setState((prevState) => {
-//   return { num: prevState.num + 1 };
-// });
+export default PrioritySelect;

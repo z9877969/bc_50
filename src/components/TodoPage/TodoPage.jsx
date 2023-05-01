@@ -3,21 +3,45 @@ import PrioritySelect from "../PrioritySelect/PrioritySelect";
 import ToDoForm from "../TodoForm/TodoForm";
 import ToDoList from "../TodoList/TodoList";
 import { todo as todoList } from "../../data/todo";
+import { v4 } from "uuid";
 
 class TodoPage extends Component {
   state = {
-    todo: todoList,
+    todo: [], // 4 + 15
     priority: "all",
+    isOpen: false,
   };
+
+  getSnapshotBeforeUpdate() {
+    return document.body.clientHeight;
+  }
+
+  componentDidMount() {
+    const savedTodo = JSON.parse(localStorage.getItem("todo")) || todoList;
+    this.setState({ todo: savedTodo });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // console.log("Todo Page CDU");
+
+    if (prevState.todo !== this.state.todo) {
+      localStorage.setItem("todo", JSON.stringify(this.state.todo));
+      window.scrollTo({
+        top: snapshot,
+        behavior: "smooth",
+      });
+    }
+    if (prevState.priority !== this.state.priority) {
+      this.setState({ isOpen: true });
+    }
+  }
 
   changePriority = (e) => {
     const { value } = e.target;
-    console.log("value :>> ", value);
     this.setState({ priority: value });
   };
 
   addTodo = (todo) => {
-    // find -> el | undefined || some -> true | false
     this.setState((prevState) => ({ todo: [...prevState.todo, todo] }));
   };
 
@@ -33,6 +57,14 @@ class TodoPage extends Component {
     }));
   };
 
+  handleAddMoreTodo = () => {
+    const newTodo = { ...this.state.todo[0] };
+    const todoList = Array(15)
+      .fill("")
+      .map((el) => ({ ...newTodo, id: v4() }));
+    this.setState((prev) => ({ todo: [...prev.todo, ...todoList] }));
+  };
+
   filterTodo = () => {
     const { todo, priority } = this.state;
     if (priority === "all") return todo;
@@ -40,6 +72,7 @@ class TodoPage extends Component {
   };
 
   render() {
+    // console.log("TodoPage render");
     const filterdTodo = this.filterTodo();
 
     return (
@@ -54,6 +87,9 @@ class TodoPage extends Component {
           removeTodo={this.removeTodo}
           updateTodoStatus={this.updateTodoStatus}
         />
+        <button type="button" onClick={this.handleAddMoreTodo}>
+          Add more todo
+        </button>
       </>
     );
   }

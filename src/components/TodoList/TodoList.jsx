@@ -1,30 +1,23 @@
 import PropTypes from "prop-types";
+import TodoItem from "../TodoItem/TodoItem";
 import s from "./TodoList.module.css";
 
 const TodoList = ({ todo = [], removeTodo, updateTodoStatus }) => {
   return (
     <ul className={s.container}>
-      {todo.map(({ title, descr, id, date, priority, isDone }) => (
-        <li key={id} className={s.toDoItem}>
-          <p className={s.date}>{date}</p>
-          <h3 className={`${s.title} ${true && s.isDone}`}>{title}</h3>
-          <p className={`${s.descr} ${true && s.isDone}`}>
-            PRIORITY - {priority}
-          </p>
-          <p className={`${s.descr} ${true && s.isDone}`}>{descr}</p>
-          <label className={s.status}>
-            <input
-              type="checkbox"
-              name="status"
-              checked={isDone}
-              onChange={(e) => updateTodoStatus(id)}
-            />
-            Done
-          </label>
-          <button className={s.todoBtn} onClick={() => removeTodo(id)}>
-            Remove
-          </button>
-        </li>
+      {todo.map((todoItemProps) => (
+        <TodoItem
+          key={todoItemProps.id}
+          // title={title}
+          // descr={descr}
+          // id={id}
+          // date={date}
+          // priority={priority}
+          // isDone={isDone}
+          {...todoItemProps}
+          removeTodo={removeTodo}
+          updateTodoStatus={updateTodoStatus}
+        />
       ))}
     </ul>
   );
@@ -44,3 +37,12 @@ TodoList.propTypes = {
 };
 
 export default TodoList;
+
+const props = {};
+
+const method1 = () => {};
+const method2 = () => {};
+
+const C = (props) => {};
+
+C({ ...props, method1, method2 });

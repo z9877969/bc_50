@@ -1,4 +1,5 @@
-import { Component } from "react";
+import { Component, PureComponent } from "react";
+
 import s from "./TodoForm.module.scss";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,14 +9,46 @@ const priorityOptions = {
   HIGH: "high",
 };
 
-class ToDoForm extends Component {
+const hardCalc = () => {
+  let i = 0;
+  while (i < 1e9) {
+    i++;
+  }
+};
+
+class ToDoForm extends PureComponent {
   state = {
     date: "2023-02-02",
-    title: "",
     descr: "",
     priority: "",
-    dayPeriods: [],
   };
+
+  // static getDerivedStateFromProps(props, state) {
+  //   // console.log("props :>> ", props);
+  //   // console.log("state :>> ", state);
+  //   console.log("Form getDerivedStateFromProps");
+  //   // const newState = { descr: "getDerivedStateFromProps" };
+  //   // return newState;
+  //   return null;
+  // }
+
+  // componentDidMount() {
+  //   console.log("Form CDM");
+  // }
+
+  // shouldComponentUpdate(newProps, newState) {
+  //   console.log("props :>> ", newProps);
+  //   console.log("newState :>> ", newState);
+  //   console.log("this.state :>> ", this.state);
+  //   if (
+  //     newState.date !== this.state.date ||
+  //     newState.descr !== this.state.descr ||
+  //     newState.priority !== this.state.priority
+  //   )
+  //     return true; // -> render true
+  //   // {} !== {}
+  //   return false; // -> render false
+  // }
 
   handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,6 +71,10 @@ class ToDoForm extends Component {
   };
 
   render() {
+    // console.log("Form render");
+
+    hardCalc();
+
     return (
       <form className={s.form} onSubmit={this.handleSubmit}>
         <label className={s.label}>
@@ -47,16 +84,6 @@ class ToDoForm extends Component {
             name="date"
             value={this.state.date}
             type="date"
-            onChange={this.handleChange}
-          />
-        </label>
-        <label className={s.label}>
-          <span> Title </span>
-          <input
-            className={s.input}
-            type="text"
-            name="title"
-            value={this.state.title}
             onChange={this.handleChange}
           />
         </label>
@@ -118,38 +145,6 @@ class ToDoForm extends Component {
             </label>
           </div>
         </div>
-        <div>
-          <label>
-            Morning
-            <input
-              type="checkbox"
-              name="dayPeriods"
-              value="morning"
-              checked={this.state.dayPeriods.includes("morning")}
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Afternoon
-            <input
-              type="checkbox"
-              name="dayPeriods"
-              value="afternoon"
-              checked={this.state.dayPeriods.includes("afternoon")}
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Evening
-            <input
-              type="checkbox"
-              name="dayPeriods"
-              value="evening"
-              checked={this.state.dayPeriods.includes("evening")}
-              onChange={this.handleChange}
-            />
-          </label>
-        </div>
         <button className={s.submit} type="submit">
           Ok
         </button>
@@ -159,15 +154,3 @@ class ToDoForm extends Component {
 }
 
 export default ToDoForm;
-
-// const obj = {
-//   a: "qwe"
-// }
-
-// obj.a
-// obj["a"]
-
-// const key = "a";
-// const value = "qwe"
-// obj[key]
-// {[key]: value }

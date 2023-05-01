@@ -25,12 +25,12 @@ export const todo = [
     priority: "high",
     isDone: false,
   },
-  {
-    id: uuidv4(),
-    date: "2022-05-03",
-    title: "Title-4",
-    descr: "Description for title - 4",
-    priority: "medium",
-    isDone: false,
-  },
+  // {
+  //   id: uuidv4(),
+  //   date: "2022-05-03",
+  //   title: "Title-4",
+  //   descr: "Description for title - 4",
+  //   priority: "medium",
+  //   isDone: false,
+  // },
 ];
