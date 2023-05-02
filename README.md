@@ -1,6 +1,5 @@
 # bc_50 - React
 
-## l-06.life-cycles
+## l-07.http
 
-### 1) life-cycles method - https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
-### 2) localStorage
+api-docs - https://newsapi.org/docs/endpoints/everything
