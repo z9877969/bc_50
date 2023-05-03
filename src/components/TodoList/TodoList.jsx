@@ -8,12 +8,6 @@ const TodoList = ({ todo = [], removeTodo, updateTodoStatus }) => {
       {todo.map((todoItemProps) => (
         <TodoItem
           key={todoItemProps.id}
-          // title={title}
-          // descr={descr}
-          // id={id}
-          // date={date}
-          // priority={priority}
-          // isDone={isDone}
           {...todoItemProps}
           removeTodo={removeTodo}
           updateTodoStatus={updateTodoStatus}
@@ -27,7 +21,7 @@ TodoList.propTypes = {
   todo: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
+      title: PropTypes.string,
       descr: PropTypes.string.isRequired,
       priority: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,

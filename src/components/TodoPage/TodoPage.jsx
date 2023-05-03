@@ -1,98 +1,70 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
+
 import PrioritySelect from "../PrioritySelect/PrioritySelect";
 import ToDoForm from "../TodoForm/TodoForm";
 import ToDoList from "../TodoList/TodoList";
 import { todo as todoList } from "../../data/todo";
-import { v4 } from "uuid";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-class TodoPage extends Component {
-  state = {
-    todo: [], // 4 + 15
-    priority: "all",
-    isOpen: false,
+const TodoPage = () => {
+  // const [todo, setTodo] = useState(
+  //   () => JSON.parse(localStorage.getItem("todo")) || []
+  // );
+  const [todo, setTodo] = useLocalStorage("todo", []);
+  const [priority, setPriority] = useState("all");
+  // const [priority1, setPriority1] = useState(() => console.log("initialState"));
+
+  const addTodo = (todo) => {
+    setTodo((prevTodo) => [...prevTodo, todo]);
   };
 
-  getSnapshotBeforeUpdate() {
-    return document.body.clientHeight;
-  }
-
-  componentDidMount() {
-    const savedTodo = JSON.parse(localStorage.getItem("todo")) || todoList;
-    this.setState({ todo: savedTodo });
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log("Todo Page CDU");
-
-    if (prevState.todo !== this.state.todo) {
-      localStorage.setItem("todo", JSON.stringify(this.state.todo));
-      window.scrollTo({
-        top: snapshot,
-        behavior: "smooth",
-      });
-    }
-    if (prevState.priority !== this.state.priority) {
-      this.setState({ isOpen: true });
-    }
-  }
-
-  changePriority = (e) => {
-    const { value } = e.target;
-    this.setState({ priority: value });
+  const removeTodo = (id) => {
+    setTodo((prev) => prev.filter((el) => el.id !== id));
   };
 
-  addTodo = (todo) => {
-    this.setState((prevState) => ({ todo: [...prevState.todo, todo] }));
+  const updateTodoStatus = (id) => {
+    setTodo((prev) =>
+      prev.map((el) => (el.id !== id ? el : { ...el, isDone: !el.isDone }))
+    );
   };
 
-  removeTodo = (id) => {
-    this.setState((prev) => ({ todo: prev.todo.filter((el) => el.id !== id) }));
+  const changePriority = (e) => {
+    setPriority(e.target.value);
   };
 
-  updateTodoStatus = (id) => {
-    this.setState((prev) => ({
-      todo: prev.todo.map((el) =>
-        el.id !== id ? el : { ...el, isDone: !el.isDone }
-      ),
-    }));
-  };
-
-  handleAddMoreTodo = () => {
-    const newTodo = { ...this.state.todo[0] };
-    const todoList = Array(15)
-      .fill("")
-      .map((el) => ({ ...newTodo, id: v4() }));
-    this.setState((prev) => ({ todo: [...prev.todo, ...todoList] }));
-  };
-
-  filterTodo = () => {
-    const { todo, priority } = this.state;
+  const filterTodo = () => {
     if (priority === "all") return todo;
     return todo.filter((el) => el.priority === priority);
   };
 
-  render() {
-    // console.log("TodoPage render");
-    const filterdTodo = this.filterTodo();
+  const filteredTodo = filterTodo();
 
-    return (
-      <>
-        <ToDoForm addTodo={this.addTodo} />
-        <PrioritySelect
-          priority={this.state.priority}
-          changePriority={this.changePriority}
-        />
-        <ToDoList
-          todo={filterdTodo}
-          removeTodo={this.removeTodo}
-          updateTodoStatus={this.updateTodoStatus}
-        />
-        <button type="button" onClick={this.handleAddMoreTodo}>
-          Add more todo
-        </button>
-      </>
-    );
-  }
-}
+  // useEffect(() => {
+  //   console.log("useEffect_one-time");
+  //   const savedTodo = JSON.parse(localStorage.getItem("todo")) || [];
+  //   setTodo(savedTodo);
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("useEffect__todo");
+  //   localStorage.setItem("todo", JSON.stringify(todo));
+  // }, [todo]);
+
+  // useEffect(() => {
+  //   console.log("useEffect__priority");
+  // }, [priority]);
+
+  return (
+    <>
+      <ToDoForm addTodo={addTodo} />
+      <PrioritySelect priority={priority} changePriority={changePriority} />
+      <ToDoList
+        todo={filteredTodo}
+        removeTodo={removeTodo}
+        updateTodoStatus={updateTodoStatus}
+      />
+    </>
+  );
+};
 
 export default TodoPage;
