@@ -2,10 +2,10 @@
 
 ## l-08.hooks-1
 
-### 1) useState
+### 1) useMemo | memo
 
-### 2) useEffect
+### 2) useCallback
 
-### 3) useRef (ref/interval)
+### 3) context | useContext
 
-### 4) useLocalStorage
+### 4) useCollectionData

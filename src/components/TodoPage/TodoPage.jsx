@@ -1,22 +1,24 @@
-import { Component, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import PrioritySelect from "../PrioritySelect/PrioritySelect";
 import ToDoForm from "../TodoForm/TodoForm";
 import ToDoList from "../TodoList/TodoList";
-import { todo as todoList } from "../../data/todo";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-const TodoPage = () => {
-  // const [todo, setTodo] = useState(
-  //   () => JSON.parse(localStorage.getItem("todo")) || []
-  // );
+const TodoPage = ({ isOpen }) => {
   const [todo, setTodo] = useLocalStorage("todo", []);
   const [priority, setPriority] = useState("all");
-  // const [priority1, setPriority1] = useState(() => console.log("initialState"));
 
-  const addTodo = (todo) => {
-    setTodo((prevTodo) => [...prevTodo, todo]);
-  };
+  // const addTodo = (todo) => {
+  //   setTodo((prevTodo) => [...prevTodo, todo]);
+  // }; // ref1 | ref2 | ref3
+  const addTodo = useCallback(
+    (newTodo) => {
+      setTodo((prevTodo) => [...prevTodo, newTodo]);
+      // setTodo([...todo, newTodo]);
+    },
+    [setTodo]
+  ); // ref1 | ref1 | ref1
 
   const removeTodo = (id) => {
     setTodo((prev) => prev.filter((el) => el.id !== id));
@@ -32,27 +34,11 @@ const TodoPage = () => {
     setPriority(e.target.value);
   };
 
-  const filterTodo = () => {
+  const filteredTodo = useMemo(() => {
+    console.log("filterTodo");
     if (priority === "all") return todo;
     return todo.filter((el) => el.priority === priority);
-  };
-
-  const filteredTodo = filterTodo();
-
-  // useEffect(() => {
-  //   console.log("useEffect_one-time");
-  //   const savedTodo = JSON.parse(localStorage.getItem("todo")) || [];
-  //   setTodo(savedTodo);
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("useEffect__todo");
-  //   localStorage.setItem("todo", JSON.stringify(todo));
-  // }, [todo]);
-
-  // useEffect(() => {
-  //   console.log("useEffect__priority");
-  // }, [priority]);
+  }, [todo, priority]);
 
   return (
     <>
@@ -62,9 +48,29 @@ const TodoPage = () => {
         todo={filteredTodo}
         removeTodo={removeTodo}
         updateTodoStatus={updateTodoStatus}
+        isOpen={isOpen}
       />
     </>
   );
 };
 
 export default TodoPage;
+
+// const useM = (cb, [d]) => {
+//   const cach = {
+//     savedD: null,
+//     value: null,
+//   };
+//   if (cach.savedD !== d) {
+//     const value = cb(d);
+//     cach.savedD = d;
+//     cach.value = value;
+//     return value;
+//   }
+
+//   return cach.value;
+// };
+
+// const v = useM(() => {
+//   return 5 + 6
+// }, [value])

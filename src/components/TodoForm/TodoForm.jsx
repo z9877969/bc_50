@@ -1,8 +1,9 @@
-import { PureComponent, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import s from "./TodoForm.module.scss";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { v4 as uuidv4 } from "uuid";
+
+// HOC
 
 const priorityOptions = {
   LOW: "low",
@@ -11,36 +12,7 @@ const priorityOptions = {
 };
 
 const TodoForm = ({ addTodo }) => {
-  // 1st variant
-  // const [date, setDate] = useState("2023-02-02");
-  // const [descr, setDescr] = useState("");
-  // const [priority, setPriority] = useState("");
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   switch (name) {
-  //     case "date":
-  //       setDate(value);
-  //       return;
-  //     case "descr":
-  //       setDescr(value);
-  //       return;
-  //     case "priority":
-  //       setPriority(value);
-  //       return;
-  //     default:
-  //       return;
-  //   }
-  // };
-  // 1st variant -END
-
-  // 2nd variant
-  // const [form, setForm] = useState({
-  //   date: "2023-05-03",
-  //   descr: "",
-  //   priority: "",
-  // });
-  const [form, setForm] = useLocalStorage("todoForm", {
+  const [form, setForm] = useState({
     date: "2023-05-03",
     descr: "",
     priority: "",
@@ -50,7 +22,6 @@ const TodoForm = ({ addTodo }) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
-  // 2nd variant -END
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,6 +32,8 @@ const TodoForm = ({ addTodo }) => {
     };
     addTodo(newTodo);
   };
+
+  console.log("TdoForm Render");
 
   return (
     <form className={s.form} onSubmit={handleSubmit}>
@@ -136,39 +109,5 @@ const TodoForm = ({ addTodo }) => {
   );
 };
 
-export default TodoForm;
-
-// const Form = ({ options, initialState }) => {
-//   const [form, setForm] = useState(initialState);
-//   return (
-//     <form>
-//       {options.map((el) => (
-//         <label>
-//           <input type={el.type} name={el.name} value={form[el.name]} />
-//         </label>
-//       ))}
-//     </form>
-//   );
-// };
-
-// const authFormOptions = [
-//   {
-//     name: "email",
-//     type: "text",
-//     placeholder: "Input email",
-//   },
-//   {
-//     name: "password",
-//     type: "text",
-//     placeholder: "Input password",
-//   },
-// ];
-
-// const authInitialState = {
-//   email: "",
-//   password: "",
-// };
-
-// const AuthForm = () => {
-//   <Form options={authFormOptions} initialState={authInitialState} />;
-// };
+// export default TodoForm;
+export default memo(TodoForm); 
