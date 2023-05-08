@@ -1,19 +1,11 @@
 import PropTypes from "prop-types";
-
-const selectStyles = {
-  display: "block",
-  width: "150px",
-  margin: "0 auto",
-  fontSize: "24px",
-  marginTop: "12px",
-  marginBottom: "12px",
-};
+import s from "./PrioritySelect.module.scss";
 
 const PrioritySelect = ({ changePriority, priority }) => {
   return (
     <select
       name="priority"
-      style={selectStyles}
+      className={s.select}
       onChange={changePriority}
       value={priority}
     >

@@ -33,8 +33,6 @@ const TodoForm = ({ addTodo }) => {
     addTodo(newTodo);
   };
 
-  console.log("TdoForm Render");
-
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       <label className={s.label}>
@@ -109,5 +107,4 @@ const TodoForm = ({ addTodo }) => {
   );
 };
 
-// export default TodoForm;
 export default memo(TodoForm); 

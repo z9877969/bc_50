@@ -1,24 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
 
-import PrioritySelect from "../PrioritySelect/PrioritySelect";
-import ToDoForm from "../TodoForm/TodoForm";
-import ToDoList from "../TodoList/TodoList";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import PrioritySelect from "../components/PrioritySelect/PrioritySelect";
+import ToDoForm from "../components/TodoForm/TodoForm";
+import ToDoList from "../components/TodoList/TodoList";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
-const TodoPage = ({ isOpen }) => {
+const useTodo = () => {
   const [todo, setTodo] = useLocalStorage("todo", []);
-  const [priority, setPriority] = useState("all");
 
-  // const addTodo = (todo) => {
-  //   setTodo((prevTodo) => [...prevTodo, todo]);
-  // }; // ref1 | ref2 | ref3
   const addTodo = useCallback(
     (newTodo) => {
       setTodo((prevTodo) => [...prevTodo, newTodo]);
-      // setTodo([...todo, newTodo]);
     },
     [setTodo]
-  ); // ref1 | ref1 | ref1
+  );
 
   const removeTodo = (id) => {
     setTodo((prev) => prev.filter((el) => el.id !== id));
@@ -30,12 +25,18 @@ const TodoPage = ({ isOpen }) => {
     );
   };
 
+  return { todo, addTodo, removeTodo, updateTodoStatus, setTodo };
+};
+
+const TodoPage = ({ isOpen }) => {
+  const { todo, addTodo, removeTodo, updateTodoStatus } = useTodo();
+  const [priority, setPriority] = useState("all");
+
   const changePriority = (e) => {
     setPriority(e.target.value);
   };
 
   const filteredTodo = useMemo(() => {
-    console.log("filterTodo");
     if (priority === "all") return todo;
     return todo.filter((el) => el.priority === priority);
   }, [todo, priority]);
@@ -56,21 +57,10 @@ const TodoPage = ({ isOpen }) => {
 
 export default TodoPage;
 
-// const useM = (cb, [d]) => {
-//   const cach = {
-//     savedD: null,
-//     value: null,
-//   };
-//   if (cach.savedD !== d) {
-//     const value = cb(d);
-//     cach.savedD = d;
-//     cach.value = value;
-//     return value;
-//   }
+const useCb = (cb, depArr) => {
+  const cbMemo = useMemo(() => {
+    return cb;
+  }, [...depArr, cb]);
 
-//   return cach.value;
-// };
-
-// const v = useM(() => {
-//   return 5 + 6
-// }, [value])
+  return cbMemo;
+};

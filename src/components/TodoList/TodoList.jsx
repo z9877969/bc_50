@@ -1,22 +1,18 @@
 import PropTypes from "prop-types";
 import TodoItem from "../TodoItem/TodoItem";
-import s from "./TodoList.module.css";
-import { useIsOpen } from "../../context/IsOpenProvider";
+import s from "./TodoList.module.scss";
 
 const TodoList = ({ todo = [], removeTodo, updateTodoStatus }) => {
-  const isOpen = useIsOpen();
-
   return (
     <ul className={s.container}>
-      {isOpen &&
-        todo.map((todoItemProps) => (
-          <TodoItem
-            key={todoItemProps.id}
-            {...todoItemProps}
-            removeTodo={removeTodo}
-            updateTodoStatus={updateTodoStatus}
-          />
-        ))}
+      {todo.map((todoItemProps) => (
+        <TodoItem
+          key={todoItemProps.id}
+          {...todoItemProps}
+          removeTodo={removeTodo}
+          updateTodoStatus={updateTodoStatus}
+        />
+      ))}
     </ul>
   );
 };
