@@ -1,9 +1,7 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 
 import s from "./TodoForm.module.scss";
 import { v4 as uuidv4 } from "uuid";
-
-// HOC
 
 const priorityOptions = {
   LOW: "low",
@@ -107,4 +105,4 @@ const TodoForm = ({ addTodo }) => {
   );
 };
 
-export default memo(TodoForm); 
+export default memo(TodoForm);

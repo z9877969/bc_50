@@ -13,10 +13,9 @@ const TodoItem = ({
 }) => {
   const [count, setCount] = useState(0);
 
-  const intervalIdRef = useRef(null); // {current: null}
+  const intervalIdRef = useRef(null); 
 
   useEffect(() => {
-    // {current: 21}
     intervalIdRef.current = setInterval(() => {
       setCount((prev) => prev + 1);
     }, 1000);
