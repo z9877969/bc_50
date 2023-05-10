@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { removeTodo, updateTodoStatus } from "../../redux/todo/todoActions";
 
 import s from "./TodoItem.module.scss";
+import { useDispatch } from "react-redux";
 
-const TodoItem = ({
-  descr,
-  id,
-  date,
-  priority,
-  isDone,
-  removeTodo,
-  updateTodoStatus,
-}) => {
+const TodoItem = ({ descr, id, date, priority, isDone }) => {
+  const dispatch = useDispatch();
+
   const [count, setCount] = useState(0);
 
-  const intervalIdRef = useRef(null); 
+  const intervalIdRef = useRef(null);
 
   useEffect(() => {
     intervalIdRef.current = setInterval(() => {
@@ -42,11 +38,11 @@ const TodoItem = ({
           type="checkbox"
           name="status"
           checked={isDone}
-          onChange={(e) => updateTodoStatus(id)}
+          onChange={(e) => dispatch(updateTodoStatus(id))}
         />
         Done
       </label>
-      <button className={s.todoBtn} onClick={() => removeTodo(id)}>
+      <button className={s.todoBtn} onClick={() => dispatch(removeTodo(id))}>
         Remove
       </button>
     </li>

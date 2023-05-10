@@ -1,6 +1,8 @@
 import { memo, useState } from "react";
 
+import { addTodo } from "../../redux/todo/todoActions";
 import s from "./TodoForm.module.scss";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 const priorityOptions = {
@@ -9,7 +11,9 @@ const priorityOptions = {
   HIGH: "high",
 };
 
-const TodoForm = ({ addTodo }) => {
+const TodoForm = () => {
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     date: "2023-05-03",
     descr: "",
@@ -28,7 +32,7 @@ const TodoForm = ({ addTodo }) => {
       isDone: false,
       id: uuidv4(),
     };
-    addTodo(newTodo);
+    dispatch(addTodo(newTodo));
   };
 
   return (

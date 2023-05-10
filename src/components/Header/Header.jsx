@@ -1,14 +1,10 @@
-import { NavLink, useLocation } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
 import clsx from "clsx";
 import s from "./Header.module.scss";
 
 const getActiveStyle = ({ isActive }) => clsx(s.link, isActive && s.active);
 
 const Header = () => {
-
-  const location = useLocation();
-
   return (
     <header className={s.header}>
       <nav className={s.nav}>
@@ -26,20 +22,6 @@ const Header = () => {
           <li className={s.item}>
             <NavLink to="/todo" className={getActiveStyle}>
               Todo
-            </NavLink>
-          </li>
-          <li className={s.item}>
-            <NavLink
-              to="/news"
-              state={location}
-              className={getActiveStyle}
-            >
-              News
-            </NavLink>
-          </li>
-          <li className={s.item}>
-            <NavLink to="/search-news" className={getActiveStyle}>
-              SearchNews
             </NavLink>
           </li>
         </ul>
