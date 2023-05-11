@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { changePriority } from "../../redux/todo/todoActions";
+// import { changePriority } from "../../redux/todo/todoActions";
+import { changeFilter } from "../../redux/todo/todoSlice";
 import s from "./PrioritySelect.module.scss";
 
 const PrioritySelect = () => {
@@ -10,7 +11,7 @@ const PrioritySelect = () => {
     <select
       name="priority"
       className={s.select}
-      onChange={(e) => dispatch(changePriority(e.target.value))}
+      onChange={(e) => dispatch(changeFilter(e))}
       value={priority}
     >
       <option value="all">All</option>
