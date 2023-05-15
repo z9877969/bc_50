@@ -1,63 +1,48 @@
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-  persistReducer,
-  persistStore,
-} from "redux-persist";
-
 import { configureStore } from "@reduxjs/toolkit";
-// import counterReducer from "./counter/counterReducer";
 import counterReducer from "./counter/counterSlice";
-import storage from "redux-persist/lib/storage";
-// import todoReducer from "./todo/todoReducer";
+import logger from "redux-logger";
 import todoReducer from "./todo/todoSlice";
 
-const persistTodoConfig = {
-  key: "todo",
-  storage: storage,
-  // whitelist: ["filter"],
-  blacklist: ["filter"],
+// const m = (store) => {
+//   return (next) => {
+//     return (action) => {
+//       console.log("action", action);
+//       next(action);
+//     };
+//   };
+// };
+const customLogger = (store) => {
+  return (next) => {
+    return (action) => {
+      console.group("action ", action.type);
+      const { dispatch, getState } = store;
+      const prevState = getState();
+      console.log("prevState", prevState);
+      console.log(action); //
+      next(action);
+      const nextState = getState();
+      console.log("nextState :>> ", nextState);
+      console.groupEnd();
+    };
+  };
 };
 
-const userPersistConfig = {
-  key: "user",
-  storage,
-  whitelist: ["name"],
+const thunk = (store) => (next) => (action) => {
+  //
+  if (typeof action === "function") {
+    action(store.dispatch, store.getState);
+    return;
+  }
+  next(action);
 };
-
-const persistedTodoReducer = persistReducer(persistTodoConfig, todoReducer);
 
 export const store = configureStore({
   reducer: {
     count: counterReducer,
-    todo: persistedTodoReducer,
-    user: persistReducer(
-      userPersistConfig,
-      (state = { name: "bart" }) => state
-    ), // "bart" -> Object
+    todo: todoReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-  // preloadedState: {
-  //   count: 100,
-  //   todo: {
-  //     items: [],
-  //     filter: "medium",
-  //   },
-  //   user: {
-  //     name: "Bob",
-  //     email: "bob@mail.com",
-  //   },
-  // },
-  // devTools: process.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    customLogger,
+  ],
 });
-
-export const persistor = persistStore(store);

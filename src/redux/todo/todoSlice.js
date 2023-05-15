@@ -6,35 +6,56 @@ const todoSlice = createSlice({
   initialState: {
     items: [],
     filter: "all",
+    isLoading: false,
+    error: null,
   },
   reducers: {
-    add: {
-      reducer(state, { payload }) {
-        return {
-          ...state,
-          items: [...state.items, payload],
-        };
-      },
-      prepare(form) {
-        return {
-          payload: { ...form, isDone: false, id: uuidv4() },
-        };
-      },
+    addTodoRequest(state) {
+      state.isLoading = true;
     },
-    remove(state, { payload }) {
-      return {
-        ...state,
-        items: state.items.filter((el) => el.id !== payload),
-      };
+    addTodoSuccess(state, { payload }) {
+      state.isLoading = false;
+      state.items.push(payload);
     },
-    updateStatus(state, { payload }) {
-      return {
-        ...state,
-        items: state.items.map((el) =>
-          el.id !== payload ? el : { ...el, isDone: !el.isDone }
-        ),
-      };
+    addTodoError(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
     },
+    getTodoRequest(state) {
+      state.isLoading = true;
+    },
+    getTodoSuccess(state, { payload }) {
+      state.isLoading = false;
+      state.items = payload;
+    },
+    getTodoError(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    removeTodoRequest(state) {
+      state.isLoading = true;
+    },
+    removeTodoSuccess(state, { payload }) {
+      state.isLoading = false;
+      state.items = state.items.filter((el) => el.id !== payload);
+    },
+    removeTodoError(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    updateTodoStatusRequest(state) {
+      state.isLoading = true;
+    },
+    updateTodoStatusSuccess(state, { payload }) {
+      state.isLoading = false;
+      const idx = state.items.findIndex((el) => el.id === payload.id);
+      state.items[idx] = { ...state.items[idx], ...payload };
+    },
+    updateTodoStatusError(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+
     changeFilter: {
       reducer(state, { payload }) {
         state.filter = payload;
@@ -48,6 +69,21 @@ const todoSlice = createSlice({
   },
 });
 
-export const { add, remove, updateStatus, changeFilter } = todoSlice.actions;
+export const {
+  addTodoRequest,
+  addTodoSuccess,
+  addTodoError,
+  getTodoRequest,
+  getTodoSuccess,
+  getTodoError,
+  removeTodoRequest,
+  removeTodoSuccess,
+  removeTodoError,
+  updateTodoStatusRequest,
+  updateTodoStatusSuccess,
+  updateTodoStatusError,
+  updateStatus,
+  changeFilter,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;

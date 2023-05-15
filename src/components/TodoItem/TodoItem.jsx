@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { remove, updateStatus } from "../../redux/todo/todoSlice";
-import { removeTodo, updateTodoStatus } from "../../redux/todo/todoActions";
+import { removeTodo, updateTodoStatus } from "../../redux/todo/todoOperations";
+import { removeTodoApi, updateTodoStatusApi } from "../../services/firebaseApi";
 
 import s from "./TodoItem.module.scss";
 import { useDispatch } from "react-redux";
@@ -39,11 +40,13 @@ const TodoItem = ({ descr, id, date, priority, isDone }) => {
           type="checkbox"
           name="status"
           checked={isDone}
-          onChange={(e) => dispatch(updateStatus(id))}
+          onChange={(e) =>
+            dispatch(updateTodoStatus(id, { isDone: e.target.checked }))
+          }
         />
         Done
       </label>
-      <button className={s.todoBtn} onClick={() => dispatch(remove(id))}>
+      <button className={s.todoBtn} onClick={() => dispatch(removeTodo(id))}>
         Remove
       </button>
     </li>

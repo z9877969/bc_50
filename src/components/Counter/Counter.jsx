@@ -1,8 +1,3 @@
-import {
-  counterDecrementAction,
-  incrementCounterAction,
-  resetCounterAction,
-} from "../../redux/counter/counterActions";
 import { decrement, increment, reset } from "../../redux/counter/counterSlice";
 import { useDispatch, useSelector } from "react-redux";
 

@@ -19,5 +19,3 @@ const counterSlice = createSlice({
 export const { decrement, increment, reset } = counterSlice.actions;
 
 export default counterSlice.reducer;
-
-// actions = {counterDecrement} -> counterDecrement() -> {type: "counter/counterDecrement"}

@@ -7,6 +7,9 @@ import s from "./PrioritySelect.module.scss";
 const PrioritySelect = () => {
   const dispatch = useDispatch();
   const priority = useSelector((state) => state.todo.filter);
+
+  console.log("Render select");
+
   return (
     <select
       name="priority"
