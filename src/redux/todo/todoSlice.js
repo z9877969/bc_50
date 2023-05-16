@@ -1,5 +1,11 @@
+import {
+  addTodo,
+  getTodo,
+  removeTodo,
+  updateTodoStatus,
+} from "./todoOperations";
+
 import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 const todoSlice = createSlice({
   name: "todo",
@@ -10,28 +16,6 @@ const todoSlice = createSlice({
     error: null,
   },
   reducers: {
-    addTodoRequest(state) {
-      state.isLoading = true;
-    },
-    addTodoSuccess(state, { payload }) {
-      state.isLoading = false;
-      state.items.push(payload);
-    },
-    addTodoError(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
-    getTodoRequest(state) {
-      state.isLoading = true;
-    },
-    getTodoSuccess(state, { payload }) {
-      state.isLoading = false;
-      state.items = payload;
-    },
-    getTodoError(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
     removeTodoRequest(state) {
       state.isLoading = true;
     },
@@ -50,6 +34,7 @@ const todoSlice = createSlice({
       state.isLoading = false;
       const idx = state.items.findIndex((el) => el.id === payload.id);
       state.items[idx] = { ...state.items[idx], ...payload };
+      state.error = null;
     },
     updateTodoStatusError(state, { payload }) {
       state.isLoading = false;
@@ -67,15 +52,64 @@ const todoSlice = createSlice({
       },
     },
   },
+  extraReducers: (builder) => {
+    // addCase | addMatcher |
+    builder
+      .addCase(addTodo.fulfilled, (state, { payload }) => {
+        state.items.push(payload);
+      })
+      .addCase(getTodo.fulfilled, (state, { payload }) => {
+        state.items = payload;
+      })
+      .addCase(removeTodo.fulfilled, (state, { payload }) => {
+        state.items = state.items.filter((el) => el.id !== payload);
+      })
+      .addCase(updateTodoStatus.fulfilled, (state, { payload }) => {
+        const idx = state.items.findIndex((el) => el.id === payload.id);
+        state.items[idx] = { ...state.items[idx], ...payload };
+      })
+      .addMatcher(
+        (action) => {
+          if (
+            action.type.startsWith("todo") &&
+            action.type.endsWith("/pending")
+          )
+            return true;
+        },
+        (state) => {
+          state.isLoading = true;
+        }
+      )
+      .addMatcher(
+        (action) => {
+          if (
+            action.type.startsWith("todo") &&
+            action.type.endsWith("/rejected")
+          )
+            return true;
+        },
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
+      .addMatcher(
+        (action) => {
+          if (
+            action.type.startsWith("todo") &&
+            action.type.endsWith("/fulfilled")
+          )
+            return true;
+        },
+        (state) => {
+          state.isLoading = false;
+          state.error = null;
+        }
+      );
+  },
 });
 
 export const {
-  addTodoRequest,
-  addTodoSuccess,
-  addTodoError,
-  getTodoRequest,
-  getTodoSuccess,
-  getTodoError,
   removeTodoRequest,
   removeTodoSuccess,
   removeTodoError,

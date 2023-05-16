@@ -26,10 +26,8 @@ const TodoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTodo({ ...form, isDone: false }));
+    dispatch(addTodo({ ...form, isDone: false })); // !
   };
-
-  console.log("Render Form");
 
   return (
     <form className={s.form} onSubmit={handleSubmit}>

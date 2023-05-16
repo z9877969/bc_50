@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { remove, updateStatus } from "../../redux/todo/todoSlice";
 import { removeTodo, updateTodoStatus } from "../../redux/todo/todoOperations";
-import { removeTodoApi, updateTodoStatusApi } from "../../services/firebaseApi";
 
 import s from "./TodoItem.module.scss";
 import { useDispatch } from "react-redux";
@@ -41,7 +39,9 @@ const TodoItem = ({ descr, id, date, priority, isDone }) => {
           name="status"
           checked={isDone}
           onChange={(e) =>
-            dispatch(updateTodoStatus(id, { isDone: e.target.checked }))
+            dispatch(
+              updateTodoStatus({ id, data: { isDone: e.target.checked } })
+            )
           }
         />
         Done

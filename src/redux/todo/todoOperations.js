@@ -5,12 +5,6 @@ import {
   updateTodoStatusApi,
 } from "../../services/firebaseApi";
 import {
-  addTodoError,
-  addTodoRequest,
-  addTodoSuccess,
-  getTodoError,
-  getTodoRequest,
-  getTodoSuccess,
   removeTodoError,
   removeTodoRequest,
   removeTodoSuccess,
@@ -19,34 +13,50 @@ import {
   updateTodoStatusSuccess,
 } from "./todoSlice";
 
-export const addTodo = (form) => {
-  return (dispatch) => {
-    dispatch(addTodoRequest());
-    addTodoApi({ ...form, isDone: false })
-      .then((todo) => dispatch(addTodoSuccess(todo)))
-      .catch((err) => dispatch(addTodoError(err.message)));
-  };
-};
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getTodo = () => (dispatch) => {
-  dispatch(getTodoRequest());
-  getTodoApi()
-    .then((data) => dispatch(getTodoSuccess(data)))
-    .catch((err) => dispatch(getTodoError(err.message)));
-};
+export const addTodo = createAsyncThunk("todo/add", async (form, thunkApi) => {
+  // dispatch({type: "todo/add/pending"})
+  try {
+    const todo = await addTodoApi(form);
+    return todo; // {type: "todo/add/fulfilled", payload: todo}
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message); // {type: "todo/add/rejected", payload: error.message}
+  }
+});
 
-export const removeTodo = (id) => (dispatch) => {
-  dispatch(removeTodoRequest());
+export const getTodo = createAsyncThunk(
+  "todo/get",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getTodoApi();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-  removeTodoApi(id)
-    .then((data) => dispatch(removeTodoSuccess(id)))
-    .catch((err) => dispatch(removeTodoError(err.message)));
-};
+export const removeTodo = createAsyncThunk(
+  "todo/remove",
+  async (id, { rejectWithValue }) => {
+    try {
+      await removeTodoApi(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-export const updateTodoStatus = (id, data) => (dispatch) => {
-  dispatch(updateTodoStatusRequest()); // request
-
-  updateTodoStatusApi(id, data)
-    .then((status) => dispatch(updateTodoStatusSuccess({ ...status, id }))) // success | p: {isDone: true, id}
-    .catch((err) => dispatch(updateTodoStatusError(err.message))); // error
-};
+export const updateTodoStatus = createAsyncThunk(
+  "todo/update/status",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const status = await updateTodoStatusApi(id, data);
+      return { ...status, id };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

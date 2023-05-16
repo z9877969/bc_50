@@ -1,5 +1,4 @@
 import axios from "axios";
-// https://bc-34-be4cc-default-rtdb.firebaseio.com/message_list.json'
 
 axios.defaults.baseURL = "https://bc-34-be4cc-default-rtdb.firebaseio.com";
 
@@ -9,8 +8,6 @@ export const addTodoApi = (todo) => {
     return { ...todo, id: data.name };
   });
 };
-
-// {name: "-NVTFiB-Obkh29HBT6uW"}
 
 export const getTodoApi = () => {
   return axios
@@ -27,5 +24,3 @@ export const removeTodoApi = (id) => {
 export const updateTodoStatusApi = (id, data) => {
   return axios.patch(`/todo/${id}/.json`, data).then((res) => res.data);
 };
-
-//   PATCH -> {}
