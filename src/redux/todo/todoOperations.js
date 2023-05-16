@@ -4,14 +4,6 @@ import {
   removeTodoApi,
   updateTodoStatusApi,
 } from "../../services/firebaseApi";
-import {
-  removeTodoError,
-  removeTodoRequest,
-  removeTodoSuccess,
-  updateTodoStatusError,
-  updateTodoStatusRequest,
-  updateTodoStatusSuccess,
-} from "./todoSlice";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
