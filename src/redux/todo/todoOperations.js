@@ -8,12 +8,11 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const addTodo = createAsyncThunk("todo/add", async (form, thunkApi) => {
-  // dispatch({type: "todo/add/pending"})
   try {
     const todo = await addTodoApi(form);
-    return todo; // {type: "todo/add/fulfilled", payload: todo}
+    return todo;
   } catch (error) {
-    return thunkApi.rejectWithValue(error.message); // {type: "todo/add/rejected", payload: error.message}
+    return thunkApi.rejectWithValue(error.message);
   }
 });
 

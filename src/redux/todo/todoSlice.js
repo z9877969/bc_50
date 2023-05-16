@@ -16,31 +16,6 @@ const todoSlice = createSlice({
     error: null,
   },
   reducers: {
-    removeTodoRequest(state) {
-      state.isLoading = true;
-    },
-    removeTodoSuccess(state, { payload }) {
-      state.isLoading = false;
-      state.items = state.items.filter((el) => el.id !== payload);
-    },
-    removeTodoError(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
-    updateTodoStatusRequest(state) {
-      state.isLoading = true;
-    },
-    updateTodoStatusSuccess(state, { payload }) {
-      state.isLoading = false;
-      const idx = state.items.findIndex((el) => el.id === payload.id);
-      state.items[idx] = { ...state.items[idx], ...payload };
-      state.error = null;
-    },
-    updateTodoStatusError(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
-
     changeFilter: {
       reducer(state, { payload }) {
         state.filter = payload;
