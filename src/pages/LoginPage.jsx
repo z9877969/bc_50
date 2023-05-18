@@ -2,26 +2,6 @@ import AuthForm from "../components/AuthForm/AuthForm";
 import { loginUser } from "../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 
-// const optionsLoginForm = [
-//   {
-//     label: "Email",
-//     type: "text",
-//     name: "email",
-//     palceholder: "Enter email...",
-//   },
-//   {
-//     label: "Password",
-//     type: "text",
-//     name: "password",
-//     palceholder: "Enter password...",
-//   },
-// ];
-
-// const initialStateLoginForm = {
-//   email: "",
-//   password: "",
-// };
-
 const LoginPage = () => {
   const dispatch = useDispatch();
 
@@ -35,8 +15,8 @@ const LoginPage = () => {
       <AuthForm
         submitTitle="Login"
         onSubmit={handleLoginUser}
-        // options={optionsLoginForm}
-        // initialState={initialStateLoginForm}
+        redirectTo="/register"
+        linkTitle={"Register"}
       />
     </>
   );

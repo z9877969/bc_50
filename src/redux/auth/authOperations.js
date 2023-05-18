@@ -1,10 +1,12 @@
 import {
   getCurUserApi,
   loginUserApi,
+  refreshTokenApi,
   registerUserApi,
 } from "../../services/firebaseApi";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { errorHandler } from "../error/errorHandler";
 import { logOut } from "./authSlice";
 
 export const registerUser = createAsyncThunk(
@@ -39,9 +41,7 @@ export const getCurUser = createAsyncThunk(
       const data = await getCurUserApi(idToken);
       return data;
     } catch (error) {
-      setTimeout(() => {
-        dispatch(logOut());
-      }, 0);
+      dispatch(errorHandler({ error, cb: getCurUser }));
       return rejectWithValue(error.message);
     }
   },
@@ -50,5 +50,24 @@ export const getCurUser = createAsyncThunk(
       const { idToken } = getState().auth;
       return Boolean(idToken);
     },
+  }
+);
+
+export const refreshToken = createAsyncThunk(
+  "auth/refresh/token",
+  async (cb, { rejectWithValue, getState, dispatch }) => {
+    const { refreshToken } = getState().auth;
+    try {
+      const tokens = await refreshTokenApi(refreshToken);
+      setTimeout(() => {
+        dispatch(cb());
+      });
+      return tokens; // dispatch({type: fulfilled, payload: tokens}) -> state = newTokens
+    } catch (error) {
+      setTimeout(() => {
+        dispatch(logOut());
+      }, 0);
+      return rejectWithValue(error.message);
+    }
   }
 );

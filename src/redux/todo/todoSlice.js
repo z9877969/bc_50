@@ -6,15 +6,18 @@ import {
 } from "./todoOperations";
 
 import { createSlice } from "@reduxjs/toolkit";
+import { logOut } from "../auth/authSlice";
+
+const initialState = {
+  items: [],
+  filter: "all",
+  isLoading: false,
+  error: null,
+};
 
 const todoSlice = createSlice({
   name: "todo",
-  initialState: {
-    items: [],
-    filter: "all",
-    isLoading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
     changeFilter: {
       reducer(state, { payload }) {
@@ -42,6 +45,9 @@ const todoSlice = createSlice({
       .addCase(updateTodoStatus.fulfilled, (state, { payload }) => {
         const idx = state.items.findIndex((el) => el.id === payload.id);
         state.items[idx] = { ...state.items[idx], ...payload };
+      })
+      .addCase(logOut, () => {
+        return { ...initialState };
       })
       .addMatcher(
         (action) => {

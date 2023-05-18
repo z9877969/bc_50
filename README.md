@@ -1,7 +1,8 @@
 # bc_50 - React
 
-# Lesson-16(auth)
+# Lesson-17(restricted-routes.errorHandler)
 
-### 1. auth | token
-### 2. AuthForm
-### 3. persist token
+### 1. logout
+### 2. auth CRUD
+### 3. restricted routes
+### 4. error handler

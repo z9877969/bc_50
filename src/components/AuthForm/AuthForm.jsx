@@ -1,11 +1,7 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const AuthForm = ({
-  onSubmit,
-  submitTitle,
-  // options, initialState
-}) => {
-  //   const [form, setForm] = useState(initialState);
+const AuthForm = ({ onSubmit, submitTitle, redirectTo, linkTitle }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -18,8 +14,6 @@ const AuthForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // (data) => dispatch(loginUser(data));
     onSubmit(form);
   };
 
@@ -45,20 +39,9 @@ const AuthForm = ({
           placeholder="Enter password..."
         />
       </label>
-      {/* {options.map((el) => (
-        <label key={el.name}>
-          <p>{el.label}</p>
-          <input
-            type={el.type}
-            name={el.name}
-            value={form[el.name]}
-            onChange={handleChange}
-            placeholder={el.palceholder}
-          />
-        </label>
-      ))} */}
       <br />
       <button type="submit">{submitTitle}</button>
+      <Link to={redirectTo}>{linkTitle}</Link>
     </form>
   );
 };

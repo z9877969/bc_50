@@ -12,10 +12,11 @@ import { useEffect } from "react";
 const TodoPage = () => {
   const dispatch = useDispatch();
   const isTodoExist = useSelector(selectIsTodoExist);
+  const isUserExist = useSelector((state) => state.auth.localId);
 
   useEffect(() => {
-    !isTodoExist && dispatch(getTodo());
-  }, [dispatch, isTodoExist]);
+    !isTodoExist && isUserExist && dispatch(getTodo());
+  }, [dispatch, isTodoExist, isUserExist]);
 
   return (
     <>
