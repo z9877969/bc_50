@@ -1,4 +1,3 @@
-import "./assets/styles/vars.css";
 import "./index.scss";
 
 import { persistor, store } from "./redux/store";

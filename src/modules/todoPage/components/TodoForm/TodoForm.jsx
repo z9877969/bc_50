@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 
 import { addTodo } from "../../redux/todo/todoOperations";
 import s from "./TodoForm.module.scss";
+import { todoFormInitialState } from "../../data/todoFormInitialState";
 import { useDispatch } from "react-redux";
 
 const priorityOptions = {
@@ -13,11 +14,7 @@ const priorityOptions = {
 const TodoForm = () => {
   const dispatch = useDispatch();
 
-  const [form, setForm] = useState({
-    date: "2023-05-03",
-    descr: "",
-    priority: "",
-  });
+  const [form, setForm] = useState(todoFormInitialState);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +29,7 @@ const TodoForm = () => {
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       <label className={s.label}>
+        <input type="text" placeholder="0,00" />
         <span> Date </span>
         <input
           className={s.input}

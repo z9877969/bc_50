@@ -1,9 +1,7 @@
+import { PrioritySelect, TodoForm, TodoList } from "modules/todoPage";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loader from "../components/Loader/Loader";
-import PrioritySelect from "../components/PrioritySelect/PrioritySelect";
-import ToDoForm from "../components/TodoForm/TodoForm";
-import ToDoList from "../components/TodoList/TodoList";
 import { getTodo } from "../redux/todo/todoOperations";
 import { increment } from "../redux/counter/counterSlice";
 import { selectIsTodoExist } from "../redux/todo/todoSelectors";
@@ -24,9 +22,9 @@ const TodoPage = () => {
         <button type="button" onClick={() => dispatch(increment(25))}>
           Click
         </button>
-        <ToDoForm />
+        <TodoForm />
         <PrioritySelect />
-        <ToDoList />
+        <TodoList />
       </Loader>
     </>
   );
