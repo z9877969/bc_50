@@ -1,3 +1,8 @@
 # bc_50 - React
 
-кожне заняття знаходиться у відповідній гілці
+# Lesson-17(restricted-routes.errorHandler)
+
+### 1. logout
+### 2. auth CRUD
+### 3. restricted routes
+### 4. error handler
