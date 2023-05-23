@@ -1,7 +1,9 @@
 import { decrement, increment, reset } from "../../redux/counter/counterSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import clsx from "clsx";
 import s from "./Counter.module.scss";
+import sprite from "../../assets/icons/sprite.svg";
 
 const Counter = () => {
   const dispatch = useDispatch();
@@ -9,8 +11,18 @@ const Counter = () => {
 
   return (
     <div className={s.container}>
-      <h1 className={s.title}>Counter</h1>
+      <h1 className={s.title} onClick={() => dispatch({ type: "sometype" })}>
+        Counter
+      </h1>
       <p className={s.count}>{count}</p>
+      {/* <button className={s.btnIcon}>
+        <svg
+          // style={{ stroke: "red", fill: "none", width: "50px", height: "auto" }}
+          className={clsx(s.icon, s.iconVector)}
+        >
+          <use href={sprite + "#icon-cart-2"}></use>
+        </svg>
+      </button> */}
       <div className={s.btnsWrapper}>
         <button
           onClick={() => dispatch(decrement(15))}

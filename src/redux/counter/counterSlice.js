@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "../../createSlice";
 
 const counterSlice = createSlice({
   name: "counter",
@@ -13,6 +14,11 @@ const counterSlice = createSlice({
     reset() {
       return 250;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase("sometype", (state) => state);
+    builder.addCase("sometype1", (state) => state);
+    builder.addCase("sometype2", (state) => state);
   },
 });
 
